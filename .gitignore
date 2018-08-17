@@ -1,7 +1,3 @@
-build
-.history
-*.js
-
 # Logs
 logs
 *.log
