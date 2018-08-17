@@ -1,7 +1,0 @@
-{
-	"smpList": [ "dailymotion", "twitter", "flickr", "youtube", "vimeo", "googleplus", "tumblr"],
-	"params": {
-		"query":"imran khan",
-		"maxResults":2
-		}		
-}
