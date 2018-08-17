@@ -1,43 +1,38 @@
-# SOCIAL SEARCHER
+# SOCIAL SEARCHER #
 
-## app.js
+This API has 2 modes the consumer mode and the author mode
 
-This program will search popular tweets based on provided keyword on seach bar and display them in a web page. Twitter limits the amount of tweeets that can be downloaded (i.e 100+ tweets per query but as I filter those tweets and extract only the most popular ones' so the API provides the max-limit of 15 tweets per query).
+## How to run this project
 
-### Dependencies
-
-To access the Tweeter API I used Twitter REST API 3.0. I also imported the libraries of body-parser and ejs.
-
-### Running the app
-
-1. Download/clone the repository to your local machine.
-2. Open the terminal line to the file location and enter the following commands one by one to download all the dependencies:
-
+1. Download/Clone the repository to your local machine
+2. Open the terminal line to the file location and enter the following commands one by one to downlaod all dependencies
 ```
-npm install express
+npm install
 ```
-
+3. After successful download of dependecies you need to convert the typescript code into javascript by putting the following command
 ```
-npm install body-parser
+tsc -w
 ```
-
+4. Now you need to run the server to work on social-search api, for that enter the following command
 ```
-npm install ejs
+nodemon build/index.js
 ```
+5. Open postman (you can easily find this in google extension) and switch to POST request
+6. As the API has 2 modes (consumer and author). Please refer to next section to run in your desire mode
 
-3. Enter the final command on terminal of same file location to run the app
-
+### Run in Consumer Mode
 ```
-node app
+    1. To run the API in consumer Mode, enter the url http://localhost:4000/socialsearch
+    2. Then copy the *Consumer Post Request* from Input_and_output_format.txt and paste it to POST request body
+    3. Hit enter to send the request and wait for outcome
+ ```
+ 
+### Run in Author Mode
 ```
-
-Note: On a successful run a message **listening to port 3000** will be printed on command prompt.
-
-4. Now open your browser and go to <http://localhost:3000/socialsearch>
-
-5. Search for tweets based on your interest in a search bar and it will print the most popular ones on web page
-
----
+    1. To run the API in consumer Mode, enter the url http://localhost:4000/search
+    2. Then copy the *Author Post Request* from Input_and_output_format.txt and paste it to POST request body
+    3. Hit enter to send the request and wait for the outcome
+ ```
 
 ### License and copyright
 
