@@ -18,12 +18,12 @@ export class DailyMotion implements SMP {
       let dm = data.list[i];
       let params = {
         title: dm.title,
-        user: dm.title,
+        user: "no user",
         url: dm.url,
         views: dm.views_total,
         desc: dm.description,
         embed: dm.embed_html,
-        created_time: dm.created_time,
+        created_time: new Date(dm.created_time).toUTCString(),
       };
       resArray.push(params);
     }

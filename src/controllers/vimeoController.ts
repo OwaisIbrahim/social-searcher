@@ -44,13 +44,16 @@ export class VimeoModule implements SMP {
     for (let i = 0; i < data.length; i++) {
       let vm = data[i];
       let params = {
-        title: vm.name,
-        user: vm.user.name,
-        url: vm.link,
-        views: vm.metadata.connections.likes.total,
-        desc: vm.description,
-        embed: vm.embed.html,
-        created_time: vm.created_time,
+        title: String(vm.name),
+        user: String(vm.user.name),
+        url: String(vm.link),
+        views: Number(vm.metadata.connections.likes.total),
+        desc: String(vm.description),
+        embed: String(vm.embed.html),
+        created_time: new Date(vm.created_time).toUTCString(),
+        extras: {
+          content_rating: vm.content_rating,
+        },
       };
       resArray.push(params);
     }

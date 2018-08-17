@@ -122,15 +122,14 @@ export class Youtube implements SMP {
   normalizeResult(data: JSON) {
     let resArray = [];
     for (let i = 0; i < data.length; i++) {
-      let yt = data[i].snippet;
+      let yt = data[i];
       let params = {
-        title: yt.title,
-        user: yt.channelTitle,
-        url: yt.thumbnails.default.url,
-        views: yt.kind,
-        desc: yt.description,
-        embed: data[i].id.videoId,
-        created_time: yt.publishedAt,
+        title: yt.snippet.title,
+        user: yt.snippet.channelTitle,
+        url: "https://www.youtube.com/embed/" + yt.id.videoId,
+        views: yt.id.kind,
+        desc: yt.snippet.description,
+        created_time: new Date(yt.snippet.publishedAt).toUTCString(),
       };
       resArray.push(params);
     }

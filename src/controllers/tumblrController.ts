@@ -39,11 +39,24 @@ export class Tumblr implements SMP {
       let params = {
         title: tm.blog_name,
         user: tm.blog_name,
-        url: tm.post_url,
+        url: tm.short_url,
         views: tm.note_count,
         desc: tm.summary,
         embed: tm.short_url,
-        created_time: tm.date,
+        created_time: new Date(tm.date).toUTCString(),
+        extras: {
+          slug: tm.slug,
+          post_info: {
+            type: tm.type,
+            body: tm.body,
+            video_url:
+              tm.type === "video"
+                ? tm.video_url || tm.permalink_url
+                : undefined,
+            img_url:
+              tm.type === "photo" ? tm.photos[0].original_size.url : undefined,
+          },
+        },
       };
       resArray.push(params);
     }

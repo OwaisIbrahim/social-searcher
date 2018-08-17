@@ -171,9 +171,22 @@ export class GooglePlus implements SMP {
         title: gp.title,
         user: gp.actor.displayName,
         url: gp.url,
-        views: gp.object.replies.totalItems,
+        views: "no views",
         desc: gp.object.attachments,
-        created_time: gp.published,
+        created_time: new Date(gp.published).toUTCString(),
+        extras: {
+          user_info: {
+            profile_image: gp.actor.image.url,
+            profile_url: gp.actor.url,
+          },
+          post_info: {
+            post_desc: gp.access.description,
+            content: gp.object.content,
+            total_replies: gp.object.replies.totalItems,
+            total_plusoners: gp.object.plusoners.totalItems,
+            total_reshares: gp.object.resharers.totalItems,
+          },
+        },
       };
       resArray.push(params);
     }

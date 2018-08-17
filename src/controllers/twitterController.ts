@@ -31,12 +31,25 @@ export class Twitter implements SMP {
     for (let i = 0; i < data.statuses.length; i++) {
       let tweet = data.statuses[i];
       let params = {
-        title: tweet.user.name,
+        title: "no title",
         user: tweet.user.name,
-        url: tweet.sources,
+        url: "https://twitter.com/statuses/" + tweet.id_str,
         views: tweet.retweet_count,
         desc: tweet.text,
-        created_time: tweet.created_at,
+        created_time: new Date(tweet.created_at).toUTCString(),
+        extras: {
+          user_info: {
+            profile_img: tweet.user.profile_image_url,
+            statuses_count: tweet.user.statuses_count,
+            friends_count: tweet.user.friends_count,
+            followers_count: tweet.user.followers_count,
+          },
+          tweet_info: {
+            favorite_count: tweet.favorite_count,
+            retweet_count: tweet.retweet_count,
+            hashtags: tweet.entities.hashtags,
+          },
+        },
       };
       filteredParams.push(params);
     }
