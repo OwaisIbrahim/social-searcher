@@ -1,0 +1,80 @@
+// Author Post Request
+//http://localhost:4000/search
+{
+	"tag":"author",
+	"smpList": [ 
+		
+		{
+			"name": "youtube",
+			"params": {
+				"part": "id, snippet",
+			    "query":"imran khan"
+			}
+		},
+
+		{
+			"name": "twitter",
+			"params":{
+				"q": "Imran khan"
+			}
+		},
+		
+		{
+			"name": "googleplus",
+			"params": {
+				"part": "id, snippet",
+			    "query":"imran khan"
+			}
+		},
+		
+		{
+			"name": "flickr",
+			"params": {
+			    "text":"imran khan"
+			}
+		},
+		
+		{
+			"name": "tumblr",
+			"params": {
+			    "query":"imran khan"
+			}
+		},
+		
+		{
+			"name": "vimeo",
+			"params": {
+			    "query":"Nawaz Shareef"
+			}
+		},
+		
+		{
+			"name": "dailymotion",
+			"params": {
+			    "query":"Nawaz Shareef"
+			}
+		}
+	]
+}
+
+//Consumer Post Request
+// http://localhost:4000/socialsearch
+{
+	"smpList": [ "dailymotion", "twitter", "flickr", "youtube", "vimeo", "googleplus", "tumblr"],
+	"params": {
+		"query":"imran khan",
+		"maxResults":2
+		}		
+}
+
+//RESULT FORMAT - For Consumer
+{
+    query:"IK",
+    timeTaken:date/time,
+    resultList:[ {name:"youtube"
+                   results:[{ title:"", user:"" , url:"", views:"", likes:"", desc:"", time:"" }, ... ] },
+
+                 { name:"twitter"
+                   results:[{ title:"", user:"" , url:"", views:"", likes:"", desc:"", time:"" }, ... ] }
+               ]
+}
