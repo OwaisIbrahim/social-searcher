@@ -172,7 +172,7 @@ export class RequestHandler {
     // Cycle through all the user requested smps
     for (var _i = 0; _i < req.body.smpList.length; _i++) {
       // Generate smp
-      this.smp = smpCreator.generate(req.body.smpList[_i].name);
+      this.smp = SMPfactory.generate(req.body.smpList[_i].name);
       if (this.smp) {
         // Call that smps search and initialize the result var with its result
         //    result.push(null);  // Increase length of result array
@@ -209,7 +209,7 @@ export class RequestHandler {
     // Cycle through all the user requested smps
     for (var _i = 0; _i < req.body.smpList.length; _i++) {
       // Generate smp
-      this.smp = smpCreator.generate(req.body.smpList[_i]);
+      this.smp = SMPfactory.generate(req.body.smpList[_i]);
       if (this.smp) {
         // Call that smps search and initialize the result var with its result
         //    result.push(null);  // Increase length of result array
@@ -305,7 +305,6 @@ export class RequestHandler {
   ): JSON {
     let result: JSON = {};
     let platform: SMP;
-    let factory: SMPfactory = new SMPfactory();
 
     result.query = q;
     result.resultList = new Array(smpList.length);
@@ -319,7 +318,7 @@ export class RequestHandler {
       result.resultList[i].results = new Array(resultCount);
 
       // create smp
-      platform = factory.generate(smp);
+      platform = SMPfactory.generate(smp);
 
       // Query each smps noramlizer and initialize its result
       result.resultList[i].results = platform.normalizeResult(data[i]);
