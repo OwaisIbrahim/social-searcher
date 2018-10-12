@@ -31,7 +31,7 @@ export class Flickr implements SMP {
       });
     });
   }
-  public normalizeResult(data: JSON) {
+  public normalizeResult(data: any): JSON[] {
     let filteredParams = [];
     for (let i = 0; i < data.length; i++) {
       let params = {

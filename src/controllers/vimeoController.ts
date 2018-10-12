@@ -39,7 +39,7 @@ export class VimeoModule implements SMP {
     );
   }
 
-  public normalizeResult(data: JSON): JSON[] {
+  public normalizeResult(data: any): JSON[] {
     let resArray = [];
     for (let i = 0; i < data.length; i++) {
       let vm = data[i];

@@ -12,7 +12,7 @@ export class DailyMotion implements SMP {
   private scope: any;
   private dailymotionData: any;
 
-  public normalizeResult(data: JSON): JSON[] {
+  public normalizeResult(data: any): JSON[] {
     let resArray = [];
     for (let i = 0; i < data.list.length; i++) {
       let dm = data.list[i];
@@ -66,19 +66,23 @@ export class DailyMotion implements SMP {
   }
 
   private checkParameters(reqData: any) {
-    let myParams = {};
+    let myParams = {
+      search: reqData.query,
+      sort: reqData.sort,
+      limit: reqData.maxResults
+    };
 
-    if (reqData.query) {
-      myParams.search = reqData.query;
-    }
+    // if (reqData.query) {
+    //   myParams.search = reqData.query;
+    // }
 
-    if (reqData.sort) {
-      myParams.sort = reqData.sort;
-    }
+    // if (reqData.sort) {
+    //   myParams.sort = reqData.sort;
+    // }
 
-    if (reqData.maxResults) {
-      myParams.limit = reqData.maxResults;
-    }
+    // if (reqData.maxResults) {
+    //   myParams.limit = reqData.maxResults;
+    // }
 
     return myParams;
   }

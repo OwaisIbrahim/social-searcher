@@ -32,7 +32,7 @@ export class Tumblr implements SMP {
     });
   }
 
-  public normalizeResult(data: JSON): JSON[] {
+  public normalizeResult(data: any): JSON[] {
     let resArray = [];
     for (let i = 0; i < data.length; i++) {
       let tm = data[i];

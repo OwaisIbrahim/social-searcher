@@ -119,7 +119,7 @@ export class Youtube implements SMP {
 
   // Our Required Functions Starts here
 
-  normalizeResult(data: JSON) {
+  normalizeResult(data: any) {
     let resArray = [];
     for (let i = 0; i < data.length; i++) {
       let yt = data[i];

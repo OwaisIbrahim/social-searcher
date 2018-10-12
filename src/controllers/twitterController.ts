@@ -26,7 +26,7 @@ export class Twitter implements SMP {
       },
     );
   }
-  public normalizeResult(data: JSON): JSON[] {
+  public normalizeResult(data: any): JSON[] {
     let filteredParams = [];
     for (let i = 0; i < data.statuses.length; i++) {
       let tweet = data.statuses[i];

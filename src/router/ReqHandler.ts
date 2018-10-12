@@ -109,10 +109,10 @@ export class RequestHandler {
     }
 
     Promise.all(myeditList)
-      .then(values => {
+      .then((values: any) => {
         res.send(values);
       })
-      .catch(err => {
+      .catch((err: any) => {
         console.log("Reject_Error: " + err);
         res.send(err);
       });
@@ -147,7 +147,7 @@ export class RequestHandler {
     }
 
     Promise.all(myeditList)
-      .then(values => {
+      .then((values:any) => {
         res.send(
           this.mapResult(
             req.body.smpList,
@@ -158,14 +158,16 @@ export class RequestHandler {
         );
         //        res.send(values);
       })
-      .catch(err => {
+      .catch((err:any) => {
         console.log("Reject_Error: " + err);
         res.send(err);
       });
   };
 
   public resolveEnum(str: string, myParams, res): {} {
-    let params = {};
+    let params = {
+      sort: ''
+    };
     if (
       myParams.query !== "undefined" ||
       myParams.query != null ||
@@ -222,13 +224,14 @@ export class RequestHandler {
     data: JSON,
     q: string,
     resultCount: number,
-  ): JSON {
-    let result: JSON = {};
+  ) {
+    let result = {
+      query: q,
+      resultList: new Array(smpList.length)
+    };
     let platform: SMP;
     let factory: SMPfactory = new SMPfactory();
 
-    result.query = q;
-    result.resultList = new Array(smpList.length);
 
     let i = 0; // to traverse each smp
     for (let smp of smpList) {
