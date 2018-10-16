@@ -73,7 +73,7 @@ export class VimeoModule implements SMP {
       // request, you should request an access token once and use it over and over.
       lib.generateClientCredentials("public", (err, response) => {
         if (err) {
-          throw err;
+          reject(err);
         }
 
         // Assign the access token to the library

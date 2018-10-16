@@ -209,7 +209,7 @@ export class Youtube implements SMP {
         resolve(response.data.items);
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.message);
         reject(err);
       });
   }

@@ -2,6 +2,7 @@ import {Router, Request, Response, NextFunction} from "express";
 import SMP from "../controllers/SMP";
 import SMPfactory from "../controllers/SMPFactory";
 import {Promise} from "es6-promise";
+import * as winston from 'winston'
 
 import * as uni from "array-unique";
 import {log} from "util";
@@ -83,6 +84,8 @@ export class RequestHandler {
 
   // the /seearch will redirect to this page and only this method will handle the request
   public handleAllRequest = (req: Request, res: Response) => {
+    // throw new Error('Something went wrong at startup');
+
     // Array of results
     // let result: JSON[] = new Array();
     let smpCreator = new SMPfactory();
@@ -113,8 +116,8 @@ export class RequestHandler {
         res.send(values);
       })
       .catch((err: any) => {
-        console.log("Reject_Error: " + err);
-        res.send(err);
+        winston.error(err.message, err);
+        res.status(500).send("Reject_Error: " + err);
       });
   };
 
@@ -145,6 +148,7 @@ export class RequestHandler {
         myeditList.push(myPromises[_i]);
       }
     }
+    
 
     Promise.all(myeditList)
       .then((values:any) => {
@@ -159,9 +163,13 @@ export class RequestHandler {
         //        res.send(values);
       })
       .catch((err:any) => {
-        console.log("Reject_Error: " + err);
-        res.send(err);
+        //res.send(err);
+        
+        winston.error(err.message, err);
+        // Log the exception
+        res.status(500).send("Reject_Error: " + err);
       });
+
   };
 
   public resolveEnum(str: string, myParams, res): {} {

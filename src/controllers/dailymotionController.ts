@@ -116,8 +116,7 @@ export class DailyMotion implements SMP {
       },
       (err: any, req: any, data: any) => {
         if (err) {
-          console.log(err);
-          return reject("not done");
+          reject(err);
         }
         //  console.log(req); // req is the original request object, useful to get headers, debug stuff and so on
         //  console.log(data);
