@@ -9,9 +9,7 @@ import {AxiosResponse} from "../../node_modules/axios";
 let OAuth2 = google.auth.OAuth2;
 
 const SCOPES = ["https://www.googleapis.com/auth/plus.me"];
-const TOKEN_DIR =
-  (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) +
-  "/.credentials/";
+const TOKEN_DIR = "./.credentials/";
 const TOKEN_PATH = TOKEN_DIR + "youtube-nodejs-quickstart.json";
 
 // Don't remove this ..
