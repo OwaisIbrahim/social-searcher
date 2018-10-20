@@ -92,26 +92,28 @@ export class RequestHandler {
     let numSocialMediaAccounts: number = 9;
     let myPromises = new Array(numSocialMediaAccounts);
     let myeditList = [];
-    // Cycle through all the user requested smps
-    for (var _i = 0; _i < req.body.smpList.length; _i++) {
-      // Generate smp
-      this.smp = smpCreator.generate(req.body.smpList[_i].name);
-      if (this.smp) {
-        // Call that smps search and initialize the result var with its result
-        //    result.push(null);  // Increase length of result array
 
-        myPromises[_i] = new Promise((resolve, reject) => {
-          this.smp.searchByKeyword(
-            req.body.smpList[_i].params,
-            resolve,
-            reject,
-          );
-        });
-        myeditList.push(myPromises[_i]);
+    if(req.body.smpList) {
+      // Cycle through all the user requested smps
+      for (var _i = 0; _i < req.body.smpList.length; _i++) {
+        // Generate smp
+        this.smp = smpCreator.generate(req.body.smpList[_i].name);
+        if (this.smp) {
+          // Call that smps search and initialize the result var with its result
+          //    result.push(null);  // Increase length of result array
+
+          myPromises[_i] = new Promise((resolve, reject) => {
+            this.smp.searchByKeyword(
+              req.body.smpList[_i].params,
+              resolve,
+              reject,
+            );
+          });
+          myeditList.push(myPromises[_i]);
+        }
       }
-    }
-
-    Promise.all(myeditList)
+      
+      Promise.all(myeditList)
       .then((values: any) => {
         res.send(values);
       })
@@ -119,6 +121,11 @@ export class RequestHandler {
         winston.error(err.message, err);
         res.status(500).send("Reject_Error: " + err);
       });
+
+  } else {
+    res.status(500).send("FORMAT ERROR: smpList is not defined");
+  }
+
   };
 
   public handleSocialSearchRequest = (req: Request, res: Response) => {
