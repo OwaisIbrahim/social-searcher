@@ -19,6 +19,9 @@ export class Twitter implements SMP {
           console.log("API returned error: " + JSON.stringify(err));
           reject(err);
         } else {
+          // for(let i=0; i<data["statuses"].length; i++) {
+          //   data["statuses"][i]["tag"] = 'twitter'
+          // }
           this.result = data;
           //console.log(data);
           resolve(data);
@@ -58,7 +61,6 @@ export class Twitter implements SMP {
 
   public config() {
     this.api = new twit({
-      // access_token_key: "1009470072056840192-RymIYBTusOOMKVApihFbyQ2CHA9t1I",
       access_token: process.env.TW_ACCESS_TOKEN,
       access_token_secret: process.env.TW_TOKEN_SECRET,
       consumer_key: process.env.TW_CONSUMER_KEY,

@@ -115,7 +115,7 @@ export class RequestHandler {
       
       Promise.all(myeditList)
       .then((values: any) => {
-        res.send(values);
+        res.json(values);
       })
       .catch((err: any) => {
         winston.error(err.message, err);
@@ -159,7 +159,7 @@ export class RequestHandler {
 
     Promise.all(myeditList)
       .then((values:any) => {
-        res.send(
+        res.json(
           this.mapResult(
             req.body.smpList,
             values,
