@@ -21,7 +21,7 @@ class SMPfactory {
     //none
   }
 
-  static generate(name: string) {
+  generate(name: string) {
     // Rough implemenatation to give idea
     switch (name) {
       case "youtube": {
