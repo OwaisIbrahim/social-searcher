@@ -1,5 +1,6 @@
 import * as http from "http";
 import Server from "./server";
+import * as winston from 'winston';
 
 const port = normalizePort(process.env.PORT || 4000);
 Server.set("port", port);
@@ -9,6 +10,11 @@ console.log(`Server listening on port ${port}`);
 const server = http.createServer(Server);
 server.listen(port);
 server.on("error", onError);
+// process.on('uncaughtException', (ex) => {
+//   console.log('We got exception');
+//   winston.error(ex.message, ex);
+  
+// })
 
 function normalizePort(val: number | string): number | string | boolean {
   const port: number = typeof val === "string" ? parseInt(val, 10) : val;

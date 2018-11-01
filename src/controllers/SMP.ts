@@ -11,7 +11,7 @@
 
 interface SMP {
   searchByKeyword(query: any, resolve, reject);
-  normalizeResult(data: JSON);
+  normalizeResult(data: any): JSON[];
 }
 
 export default SMP;

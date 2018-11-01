@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "ts": "tsc -w",
+    "server": "nodemon ./build/index.js",
+    "start": "tsc && pm2 start ./build/index.js"
+  },
+  "engines": {
+    "node": "8.11.3"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +30,7 @@
     "ejs-lint": "^0.3.0",
     "es6-promise": "^4.2.4",
     "express": "^4.16.3",
+    "express-async-errors": "^3.1.1",
     "flickrapi": "^0.6.0",
     "google-trends-api": "^4.7.0",
     "googleapis": "^32.0.0",
@@ -34,7 +41,8 @@
     "twit": "^2.2.11",
     "twitter": "^1.7.1",
     "typescript": "^3.0.1",
-    "vimeo": "^2.1.0"
+    "vimeo": "^2.1.0",
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.1",

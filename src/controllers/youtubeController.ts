@@ -11,9 +11,7 @@ let OAuth2 = google.auth.OAuth2;
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/youtube-nodejs-quickstart.json
 var SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"];
-var TOKEN_DIR =
-  (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) +
-  "/.credentials/";
+var TOKEN_DIR = "./.credentials/";
 var TOKEN_PATH = TOKEN_DIR + "youtube-nodejs-quickstart.json";
 
 export class Youtube implements SMP {
@@ -24,7 +22,7 @@ export class Youtube implements SMP {
     // Authorize a client with the loaded credentials, then call the YouTube API.
     this.authorize();
   }
-
+hero
   authorize() {
     var clientSecret = process.env.YT_CLIENT_SECRET;
     var clientId = process.env.YT_CLIENT_ID;
@@ -119,18 +117,17 @@ export class Youtube implements SMP {
 
   // Our Required Functions Starts here
 
-  normalizeResult(data: JSON) {
+  normalizeResult(data: any) {
     let resArray = [];
     for (let i = 0; i < data.length; i++) {
-      let yt = data[i].snippet;
+      let yt = data[i];
       let params = {
-        title: yt.title,
-        user: yt.channelTitle,
-        url: yt.thumbnails.default.url,
-        views: yt.kind,
-        desc: yt.description,
-        embed: data[i].id.videoId,
-        created_time: yt.publishedAt,
+        title: yt.snippet.title,
+        user: yt.snippet.channelTitle,
+        url: "https://www.youtube.com/embed/" + yt.id.videoId,
+        views: yt.id.kind,
+        desc: yt.snippet.description,
+        created_time: new Date(yt.snippet.publishedAt).toUTCString(),
       };
       resArray.push(params);
     }
@@ -210,7 +207,7 @@ export class Youtube implements SMP {
         resolve(response.data.items);
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.message);
         reject(err);
       });
   }

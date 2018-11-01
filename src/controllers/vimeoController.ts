@@ -39,7 +39,7 @@ export class VimeoModule implements SMP {
     );
   }
 
-  public normalizeResult(data: JSON): JSON[] {
+  public normalizeResult(data: any): JSON[] {
     let resArray = [];
     for (let i = 0; i < data.length; i++) {
       let vm = data[i];
@@ -50,7 +50,10 @@ export class VimeoModule implements SMP {
         views: vm.metadata.connections.likes.total,
         desc: vm.description,
         embed: vm.embed.html,
-        created_time: vm.created_time,
+        created_time: new Date(vm.created_time).toUTCString(),
+        extras: {
+          content_rating: vm.content_rating,
+        },
       };
       resArray.push(params);
     }
@@ -70,7 +73,7 @@ export class VimeoModule implements SMP {
       // request, you should request an access token once and use it over and over.
       lib.generateClientCredentials("public", (err, response) => {
         if (err) {
-          throw err;
+          reject(err);
         }
 
         // Assign the access token to the library

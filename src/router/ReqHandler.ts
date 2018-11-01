@@ -2,6 +2,7 @@ import {Router, Request, Response, NextFunction} from "express";
 import SMP from "../controllers/SMP";
 import SMPfactory from "../controllers/SMPFactory";
 import {Promise} from "es6-promise";
+import * as winston from 'winston'
 
 import * as uni from "array-unique";
 import {log} from "util";
@@ -25,86 +26,6 @@ enum maxResults {
   vimeo = "per_page",
   tumblr = "limit",
   googleplus = "maxResults",
-}
-
-enum smp_title {
-  youtube = "snippet.title",
-  twitter = "user.name",
-  flickr = "title",
-  dailymotion = "list.title",
-  vimeo = "name",
-  tumblr = "blog_name",
-  googleplus = "title",
-}
-
-enum smp_user {
-  youtube = "snippet.channelTitle",
-  twitter = "statuses.user.name",
-  flickr = "title",
-  dailymotion = "list.title",
-  vimeo = "user.name",
-  tumblr = "blog_name",
-  googleplus = "actor.displayName",
-}
-
-enum smp_url {
-  youtube = "snippet.thumbnails.default.url",
-  twitter = "statuses.source",
-  flickr = "id",
-  dailymotion = "list.url",
-  vimeo = "link",
-  tumblr = "post_url",
-  googleplus = "url",
-}
-
-enum smp_desc {
-  youtube = "snippet.description",
-  twitter = "statuses.text",
-  flickr = "id",
-  dailymotion = "list.description",
-  vimeo = "description",
-  tumblr = "summary",
-  googleplus = "object.attachments",
-}
-
-enum smp_views {
-  youtube = "kind",
-  twitter = "statuses.retweet_count",
-  flickr = "id",
-  dailymotion = "list.views_total",
-  vimeo = "metadata.connections.likes.total",
-  tumblr = "note_count",
-  googleplus = "object.replies.totalItems",
-}
-
-enum smp_embed {
-  youtube = "id.videoId",
-  twitter = "statuses.source",
-  flickr = "owner",
-  dailymotion = "list.embed_html",
-  vimeo = "embed.html",
-  tumblr = "short_url",
-  googleplus = "none",
-}
-
-enum smp_time {
-  youtube = "snippet.publishedAt",
-  twitter = "created_at",
-  flickr = "id",
-  dailymotion = "created_time",
-  vimeo = "created_time",
-  tumblr = "date",
-  googleplus = "published",
-}
-
-enum smp_resultname {
-  youtube = "",
-  twitter = "statuses",
-  flickr = "",
-  dailymotion = "list",
-  vimeo = "",
-  tumblr = "",
-  googleplus = "", //blanks mean api dosent have a specific result name
 }
 
 enum relevance {
@@ -163,39 +84,48 @@ export class RequestHandler {
 
   // the /seearch will redirect to this page and only this method will handle the request
   public handleAllRequest = (req: Request, res: Response) => {
+    // throw new Error('Something went wrong at startup');
+
     // Array of results
     // let result: JSON[] = new Array();
     let smpCreator = new SMPfactory();
     let numSocialMediaAccounts: number = 9;
     let myPromises = new Array(numSocialMediaAccounts);
     let myeditList = [];
-    // Cycle through all the user requested smps
-    for (var _i = 0; _i < req.body.smpList.length; _i++) {
-      // Generate smp
-      this.smp = smpCreator.generate(req.body.smpList[_i].name);
-      if (this.smp) {
-        // Call that smps search and initialize the result var with its result
-        //    result.push(null);  // Increase length of result array
 
-        myPromises[_i] = new Promise((resolve, reject) => {
-          this.smp.searchByKeyword(
-            req.body.smpList[_i].params,
-            resolve,
-            reject,
-          );
-        });
-        myeditList.push(myPromises[_i]);
+    if(req.body.smpList) {
+      // Cycle through all the user requested smps
+      for (var _i = 0; _i < req.body.smpList.length; _i++) {
+        // Generate smp
+        this.smp = smpCreator.generate(req.body.smpList[_i].name);
+        if (this.smp) {
+          // Call that smps search and initialize the result var with its result
+          //    result.push(null);  // Increase length of result array
+
+          myPromises[_i] = new Promise((resolve, reject) => {
+            this.smp.searchByKeyword(
+              req.body.smpList[_i].params,
+              resolve,
+              reject,
+            );
+          });
+          myeditList.push(myPromises[_i]);
+        }
       }
-    }
-
-    Promise.all(myeditList)
-      .then(values => {
-        res.send(values);
+      
+      Promise.all(myeditList)
+      .then((values: any) => {
+        res.json(values);
       })
-      .catch(err => {
-        console.log("Reject_Error: " + err);
-        res.send(err);
+      .catch((err: any) => {
+        winston.error(err.message, err);
+        res.status(500).send("Reject_Error: " + err);
       });
+
+  } else {
+    res.status(500).send("FORMAT ERROR: smpList is not defined");
+  }
+
   };
 
   public handleSocialSearchRequest = (req: Request, res: Response) => {
@@ -225,11 +155,12 @@ export class RequestHandler {
         myeditList.push(myPromises[_i]);
       }
     }
+    
 
     Promise.all(myeditList)
-      .then(values => {
-        res.send(
-          this.new_mapResult(
+      .then((values:any) => {
+        res.json(
+          this.mapResult(
             req.body.smpList,
             values,
             req.body.params.query,
@@ -238,14 +169,20 @@ export class RequestHandler {
         );
         //        res.send(values);
       })
-      .catch(err => {
-        console.log("Reject_Error: " + err);
-        res.send(err);
+      .catch((err:any) => {
+        //res.send(err);
+        
+        winston.error(err.message, err);
+        // Log the exception
+        res.status(500).send("Reject_Error: " + err);
       });
+
   };
 
   public resolveEnum(str: string, myParams, res): {} {
-    let params = {};
+    let params = {
+      sort: ''
+    };
     if (
       myParams.query !== "undefined" ||
       myParams.query != null ||
@@ -297,18 +234,19 @@ export class RequestHandler {
    * @param resultCount
    * @description function to map result data to a simpler format
    */
-  public new_mapResult(
+  public mapResult(
     smpList: string[],
     data: JSON,
     q: string,
     resultCount: number,
-  ): JSON {
-    let result: JSON = {};
+  ) {
+    let result = {
+      query: q,
+      resultList: new Array(smpList.length)
+    };
     let platform: SMP;
     let factory: SMPfactory = new SMPfactory();
 
-    result.query = q;
-    result.resultList = new Array(smpList.length);
 
     let i = 0; // to traverse each smp
     for (let smp of smpList) {

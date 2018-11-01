@@ -9,9 +9,7 @@ import {AxiosResponse} from "../../node_modules/axios";
 let OAuth2 = google.auth.OAuth2;
 
 const SCOPES = ["https://www.googleapis.com/auth/plus.me"];
-const TOKEN_DIR =
-  (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) +
-  "/.credentials/";
+const TOKEN_DIR = "./.credentials/";
 const TOKEN_PATH = TOKEN_DIR + "youtube-nodejs-quickstart.json";
 
 // Don't remove this ..
@@ -163,7 +161,7 @@ export class GooglePlus implements SMP {
 
   // Our Required Functions Starts here
 
-  public normalizeResult(data: JSON): JSON[] {
+  public normalizeResult(data: any): JSON[] {
     let resArray = [];
     for (let i = 0; i < data.length; i++) {
       let gp = data[i];
@@ -171,9 +169,22 @@ export class GooglePlus implements SMP {
         title: gp.title,
         user: gp.actor.displayName,
         url: gp.url,
-        views: gp.object.replies.totalItems,
+        views: "no views",
         desc: gp.object.attachments,
-        created_time: gp.published,
+        created_time: new Date(gp.published).toUTCString(),
+        extras: {
+          user_info: {
+            profile_image: gp.actor.image.url,
+            profile_url: gp.actor.url,
+          },
+          post_info: {
+            post_desc: gp.access.description,
+            content: gp.object.content,
+            total_replies: gp.object.replies.totalItems,
+            total_plusoners: gp.object.plusoners.totalItems,
+            total_reshares: gp.object.resharers.totalItems,
+          },
+        },
       };
       resArray.push(params);
     }

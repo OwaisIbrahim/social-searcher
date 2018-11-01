@@ -1,6 +1,10 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as dotenv from "dotenv";
+import * as winston from 'winston';
+
+
+
 dotenv.config();
 // import routers
 import {RequestHandler} from "./router/ReqHandler";
@@ -19,6 +23,8 @@ class Server {
     // config
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({extended: true}));
+    winston.add(winston.transports.File, {filename: 'logfile.log'});
+    
   }
 
   public routes(): void {

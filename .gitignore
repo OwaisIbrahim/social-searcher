@@ -1,6 +1,7 @@
-build
+build/
 .history
 *.js
+README.md
 
 # Logs
 logs

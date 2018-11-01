@@ -12,18 +12,18 @@ export class DailyMotion implements SMP {
   private scope: any;
   private dailymotionData: any;
 
-  public normalizeResult(data: JSON): JSON[] {
+  public normalizeResult(data: any): JSON[] {
     let resArray = [];
     for (let i = 0; i < data.list.length; i++) {
       let dm = data.list[i];
       let params = {
         title: dm.title,
-        user: dm.title,
+        user: "no user",
         url: dm.url,
         views: dm.views_total,
         desc: dm.description,
         embed: dm.embed_html,
-        created_time: dm.created_time,
+        created_time: new Date(dm.created_time).toUTCString(),
       };
       resArray.push(params);
     }
@@ -66,19 +66,23 @@ export class DailyMotion implements SMP {
   }
 
   private checkParameters(reqData: any) {
-    let myParams = {};
+    let myParams = {
+      search: reqData.query,
+      sort: reqData.sort,
+      limit: reqData.maxResults
+    };
 
-    if (reqData.query) {
-      myParams.search = reqData.query;
-    }
+    // if (reqData.query) {
+    //   myParams.search = reqData.query;
+    // }
 
-    if (reqData.sort) {
-      myParams.sort = reqData.sort;
-    }
+    // if (reqData.sort) {
+    //   myParams.sort = reqData.sort;
+    // }
 
-    if (reqData.maxResults) {
-      myParams.limit = reqData.maxResults;
-    }
+    // if (reqData.maxResults) {
+    //   myParams.limit = reqData.maxResults;
+    // }
 
     return myParams;
   }
@@ -112,8 +116,7 @@ export class DailyMotion implements SMP {
       },
       (err: any, req: any, data: any) => {
         if (err) {
-          console.log(err);
-          return reject("not done");
+          reject(err);
         }
         //  console.log(req); // req is the original request object, useful to get headers, debug stuff and so on
         //  console.log(data);
