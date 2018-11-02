@@ -197,11 +197,17 @@ hero
    */
 
   searchByKeyword(reqData, resolve, reject) {
-    var params = this.checkParameters(reqData);
+    // var params = reqData;
+    reqData.auth = this.authentication;
+    if(reqData.part == null)
+    {
+      reqData.part="snippet";
+    }
+
     var service = google.youtube("v3");
 
     service.search
-      .list(params)
+      .list(reqData)
       .then(response => {
         this.youtubeData = response.data.items;
         resolve(response.data.items);
@@ -255,6 +261,30 @@ hero
       }
     }
     return params;
+  }
+
+  /**
+   * @description Function search by keyword and on basis of various criterias provided via the JSON object.
+   * @param {JSON} query a json object containing the search parameters and query
+   * @param resolve The return result data should the function run successfully
+   * @param reject The reject value if the function does not complete successfully
+   * @returns {JSON} returns a JSON object containing search results. Extract the results using obj.data
+   */
+
+  searchByRegionTrends(query, resolve, reject){
+    query.auth = this.authentication;
+    var service = google.youtube("v3");
+
+    service.videos
+      .list(query)
+      .then(response => {
+        this.youtubeData = response.data.items;
+        resolve(response.data.items);
+      })
+      .catch(err => {
+        console.log(err.message);
+        reject(err);
+      });
   }
 
   //-------------------------------------//
