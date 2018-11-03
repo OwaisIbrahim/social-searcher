@@ -1,5 +1,7 @@
 // import * as twit from "twitter";
 import * as twit from "twit";
+var fs = require('fs');
+
 import SMP from "./SMP";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -24,11 +26,70 @@ export class Twitter implements SMP {
           // }
           this.result = data;
           //console.log(data);
+          // var p = {lat: 24.926294, long: 67.022095};
+          // this.trendsAvailable(resolve, reject);
+          // this.trendsClosest(p, resolve, reject);
+          // this.trendsPlace( {"id": 7}, resolve, reject);
           resolve(data);
         }
       },
     );
   }
+
+  public trendsAvailable(resolve, reject) {
+    this.api.get(
+      "trends/available",
+      (err, data, response) => {
+        if (err) {
+          console.log("API returned error: " + JSON.stringify(err));
+          reject(err);
+        } else {
+          // this.result = data;
+          console.log('trendsAvailable RESPONSE: ', JSON.stringify(data, null, 2));
+          // fs.writeFile('trendsAvailable.json', JSON.stringify(data, null, 2));
+          resolve(data);
+        }
+      },
+    );
+  }
+
+  public trendsClosest(params: any, resolve, reject) {    //params will contain {lat: 37.781157, long: -122.400612831116}
+    this.api.get(
+      "trends/closest",
+      params as twit.Params,
+      (err, data, response) => {
+        if (err) {
+          console.log("API returned error: " + JSON.stringify(err));
+          reject(err);
+        } else {
+          // this.result = data;
+          console.log('trendsClosest(', params, ') RESPONSE: ', JSON.stringify(data, null, 2));
+          // fs.writeFile('trendsClosest.json', JSON.stringify(data, null, 2));
+          resolve(data);
+        }
+      },
+    );
+  }
+
+  
+  public trendsPlace(params: any, resolve, reject) {    //params will contain {id: 1}
+    this.api.get(
+      "trends/place",
+      params as twit.Params,
+      (err, data, response) => {
+        if (err) {
+          console.log("API returned error: " + JSON.stringify(err));
+          reject(err);
+        } else {
+          // this.result = data;
+          console.log('trendsPlace(', params, ') RESPONSE: ', JSON.stringify(data, null, 2));
+          // fs.writeFile('trendsPlace.json', JSON.stringify(data, null, 2));
+          resolve(data);
+        }
+      },
+    );
+  }
+
   public normalizeResult(data: any): JSON[] {
     let filteredParams = [];
     for (let i = 0; i < data.statuses.length; i++) {
