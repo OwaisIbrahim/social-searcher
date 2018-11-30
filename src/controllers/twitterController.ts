@@ -34,7 +34,7 @@ export class Twitter implements SMP {
           // this.trendsAvailable(resolve, reject);
           // this.trendsClosest(p, resolve, reject);
           // this.trendsPlace( {"id": 7}, resolve, reject);
-          this.doSentimentAnalysis(data.statuses);
+          this.doSentimentAnalysis(data['statuses']);
           resolve(data);
         }
       },
