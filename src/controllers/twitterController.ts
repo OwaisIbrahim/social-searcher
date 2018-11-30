@@ -1,5 +1,9 @@
 // import * as twit from "twitter";
 import * as twit from "twit";
+
+var Sentiment = require ('sentiment');
+var sentiment = new Sentiment();
+
 var fs = require('fs');
 
 import SMP from "./SMP";
@@ -30,11 +34,33 @@ export class Twitter implements SMP {
           // this.trendsAvailable(resolve, reject);
           // this.trendsClosest(p, resolve, reject);
           // this.trendsPlace( {"id": 7}, resolve, reject);
+          this.doSentimentAnalysis(data.statuses);
           resolve(data);
         }
       },
     );
   }
+
+  public doSentimentAnalysis(data: any) {
+    var result;
+    for (let index = 0; index < data.length; index++) {
+      result = sentiment.analyze(data[index].full_text);
+      if( result.comparative == 0 )
+        data[index]['sentiment'] = '#b3b3b3';
+      else if(result.comparative > 0)
+        data[index]['sentiment'] = '#8caa0b';
+      else
+        data[index]['sentiment'] = '#ff0000';
+      // console.log('Node result: ' + JSON.stringify(result))
+    }
+  }
+  
+
+
+
+  // {"score":3,"comparative":0.06}
+
+
 
   public trendsAvailable(resolve, reject) {
     this.api.get(

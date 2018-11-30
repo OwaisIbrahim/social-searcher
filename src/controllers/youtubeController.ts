@@ -6,6 +6,11 @@ dotenv.config();
 import {google} from "googleapis";
 import {OAuth2Client} from "../../node_modules/google-auth-library";
 import {Credentials} from "../../node_modules/google-auth-library/build/src/auth/credentials";
+
+
+var Sentiment = require ('sentiment');
+var sentiment = new Sentiment();
+
 let OAuth2 = google.auth.OAuth2;
 
 // If modifying these scopes, delete your previously saved credentials
@@ -22,7 +27,7 @@ export class Youtube implements SMP {
     // Authorize a client with the loaded credentials, then call the YouTube API.
     this.authorize();
   }
-hero
+// hero
   authorize() {
     var clientSecret = process.env.YT_CLIENT_SECRET;
     var clientId = process.env.YT_CLIENT_ID;
@@ -210,12 +215,28 @@ hero
       .list(reqData)
       .then(response => {
         this.youtubeData = response.data.items;
+        this.doSentimentAnalysis(response.data.items);
         resolve(response.data.items);
       })
       .catch(err => {
         console.log(err.message);
         reject(err);
       });
+  }
+
+  
+  public doSentimentAnalysis(data: any) {
+    var result;
+    for (let index = 0; index < data.length; index++) {
+      result = sentiment.analyze(data[index].snippet.description);
+      if( result.comparative == 0 )
+        data[index]['sentiment'] = '#b3b3b3';
+      else if(result.comparative > 0)
+        data[index]['sentiment'] = '#8caa0b';
+      else
+        data[index]['sentiment'] = '#ff0000';
+      // console.log('Node result: ' + JSON.stringify(result))
+    }
   }
 
   checkParameters(reqData) {
