@@ -45,9 +45,9 @@ export class Twitter implements SMP {
     var result;
     for (let index = 0; index < data.length; index++) {
       result = sentiment.analyze(data[index].full_text);
-      if( result.comparative == 0 )
+      if( result.comparative <= 1 && result.comparative >= -1 )
         data[index]['sentiment'] = '#b3b3b3';
-      else if(result.comparative > 0)
+      else if(result.comparative > 1)
         data[index]['sentiment'] = '#8caa0b';
       else
         data[index]['sentiment'] = '#ff0000';
