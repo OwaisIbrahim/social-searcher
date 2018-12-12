@@ -229,11 +229,11 @@ export class Youtube implements SMP {
     var result;
     for (let index = 0; index < data.length; index++) {
       result = sentiment.analyze(data[index].snippet.description);
-      if( result.comparative <= 1 && result.comparative >= -1) //neutral
+      if( result.comparative == 0 )
         data[index]['sentiment'] = '#b3b3b3';
-      else if(result.comparative > 1) //Positive
+      else if(result.comparative > 1) 
         data[index]['sentiment'] = '#8caa0b';
-      else  //-ve
+      else
         data[index]['sentiment'] = '#ff0000';
       // console.log('Node result: ' + JSON.stringify(result))
     }
