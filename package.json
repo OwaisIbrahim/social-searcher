@@ -37,6 +37,7 @@
     "node": "^10.7.0",
     "nodemailer": "^4.6.7",
     "nodemon": "^1.18.3",
+    "sentiment": "^5.0.1",
     "tumblr.js": "^2.0.0",
     "twit": "^2.2.11",
     "twitter": "^1.7.1",
