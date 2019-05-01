@@ -55,6 +55,10 @@ export class DailyMotion implements SMP {
     client.setCredentials(DMClient.GRANT_TYPES.CLIENT_CREDENTIALS);
   }
 
+  searchByTrends(query: any, resolve: any, reject: any) {
+    throw new Error("Method not implemented.");
+  }
+
   public searchByKeyword(reqData: any, resolve: any, reject: any) {
     // this.resolve=resolve;
     // this.reject=reject;

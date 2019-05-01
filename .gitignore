@@ -2,6 +2,7 @@ build/
 .history
 *.js
 README.md
+client_secret.json
 
 # Logs
 logs

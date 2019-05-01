@@ -29,6 +29,26 @@ export class Twitter implements SMP {
       },
     );
   }
+
+  public searchByTrends(params: JSON, resolve, reject) {
+    this.api.get(
+      "trends/place",
+      params as twit.Params,
+      (err, data, response) => {
+        if (err) {
+          console.log("API returned error: " + JSON.stringify(err));
+          reject(err);
+        } 
+        
+        else {
+          this.result = data;
+          resolve(data);
+        }
+      },
+    );
+  }
+
+
   public normalizeResult(data: any): JSON[] {
     let filteredParams = [];
     for (let i = 0; i < data.statuses.length; i++) {

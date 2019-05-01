@@ -271,7 +271,7 @@ hero
    * @returns {JSON} returns a JSON object containing search results. Extract the results using obj.data
    */
 
-  searchByRegionTrends(query, resolve, reject){
+  searchByTrends(query, resolve, reject){
     query.auth = this.authentication;
     var service = google.youtube("v3");
 
