@@ -15,6 +15,10 @@ export class Flickr implements SMP {
     this.flickrData = "nothing";
   }
 
+  searchByTrends(query: any, resolve: any, reject: any) {
+    throw new Error("Method not implemented.");
+  }
+
   public searchByKeyword(reqData, resolve, reject) {
     // let myParams = this.checkParameters(reqData);
     flickrapi.tokenOnly(flickrOptions, (error, flickr) => {

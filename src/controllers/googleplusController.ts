@@ -64,6 +64,10 @@ export class GooglePlus implements SMP {
     this.authentication = val;
   }
 
+  searchByTrends(query: any, resolve: any, reject: any) {
+    throw new Error("Method not implemented.");
+  }
+
   /**
    * @description Function search by keyword and on basis of various criterias provided via the JSON object.
    * @param {JSON} query a json object containing the search parameters and query

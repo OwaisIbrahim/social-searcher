@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 export class Tumblr implements SMP {
+  
   private client: any;
   private TumblrData: any;
 
@@ -16,6 +17,10 @@ export class Tumblr implements SMP {
     });
 
     this.TumblrData = "Nothing";
+  }
+
+  searchByTrends(query: any, resolve: any, reject: any) {
+    throw new Error("Method not implemented.");
   }
 
   public searchByKeyword(reqData, resolve, reject) {

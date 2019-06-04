@@ -60,6 +60,10 @@ export class VimeoModule implements SMP {
     return resArray;
   }
 
+  searchByTrends(query: any, resolve: any, reject: any) {
+    throw new Error("Method not implemented.");
+  }
+
   public searchByKeyword(reqData, resolve, reject) {
     let myParams = this.checkParameters(reqData);
 

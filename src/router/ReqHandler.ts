@@ -79,10 +79,53 @@ enum views {
 }
 
 export class RequestHandler {
+  
   private smp: SMP;
   constructor() {}
 
-  // the /seearch will redirect to this page and only this method will handle the request
+
+  public handleTrendRequest = (req: Request, res: Response) => {
+      let smpCreator = new SMPfactory();
+      let numSocialMediaAccounts: number = 9;
+      let myPromises = new Array(numSocialMediaAccounts);
+      let myeditList = [];
+
+      if(req.body.smpList) {
+        // Cycle through all the user requested smps
+        for (var _i = 0; _i < req.body.smpList.length; _i++) {
+          // Generate smp
+          this.smp = smpCreator.generate(req.body.smpList[_i].name);
+          if (this.smp) {
+            // Call that smps search and initialize the result var with its result
+            //    result.push(null);  // Increase length of result array
+
+            myPromises[_i] = new Promise((resolve, reject) => {
+              this.smp.searchByTrends(
+                req.body.smpList[_i].params,
+                resolve,
+                reject,
+              );
+            });
+            myeditList.push(myPromises[_i]);
+          }
+        }
+        
+        Promise.all(myeditList)
+        .then((values: any) => {
+          res.json(values);
+        })
+        .catch((err: any) => {
+          winston.error(err.message, err);
+          res.status(500).send("Reject_Error: " + err);
+        });
+
+    } else {
+      res.status(500).send("FORMAT ERROR: smpList is not defined");
+    }
+  }
+  
+
+  // the /search will redirect to this page and only this method will handle the request
   public handleAllRequest = (req: Request, res: Response) => {
     // throw new Error('Something went wrong at startup');
 
